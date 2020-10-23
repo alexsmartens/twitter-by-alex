@@ -61,5 +61,5 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # Allow connections to local server
-  % config.hosts.clear
+  config.hosts.clear
 end
