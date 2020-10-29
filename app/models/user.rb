@@ -9,8 +9,9 @@ class User < ApplicationRecord
     # mechanism requires you to have a XXX_digest attribute. Where XXX is the 
     # attribute name of your desired password. The following validations are 
     # added automatically:
-    # - Password must be present on creation
+    # - Password must be present on creation (but allows blank passwords " ")
     # - Password length should be less than or equal to 72 bytes
     # - (optional) Confirmation of password (using a XXX_confirmation attribute)
     has_secure_password
+    validates :password, presence: true, length: {minimum: 6}
 end
