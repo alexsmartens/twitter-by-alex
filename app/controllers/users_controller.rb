@@ -23,6 +23,8 @@ class UsersController < ApplicationController
   private
 
     def user_params
+      # If a permitted attribute is not present than it is considered to be an 
+      # empty string
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
 end
