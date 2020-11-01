@@ -5,7 +5,6 @@ default: &default
   encoding: unicode
   pool:  <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: twitter_admin
-  password:
 
 development:
   <<: *default
@@ -17,6 +16,7 @@ development:
 test:
   <<: *default
   database:  db/twitter_test
+  password: test
 
 production:
   <<: *default
