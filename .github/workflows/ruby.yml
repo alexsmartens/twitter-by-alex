@@ -21,6 +21,7 @@ jobs:
       postgres:
         image: postgres:13
         env:
+          POSTGRES_USER: twitter_admin
           POSTGRES_PASSWORD: test
         ports:
           - 5432:5432
