@@ -20,7 +20,11 @@ jobs:
     services:
       postgres:
         image: postgres:13.0
-        ports: ["5432:5432"]
+        env:
+          POSTGRES_PASSWORD: 
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
@@ -32,18 +36,13 @@ jobs:
       uses: ruby/setup-ruby@ec106b438a1ff6ff109590de34ddc62c540232e0
       with:
         ruby-version: 2.6
-    - name: Install PostgreSQL 13 client
-      run: |
-        sudo apt-get -yqq install libpq-dev
+    - name: Install required apt packages
+        run: |
+          sudo apt-get -y install libpq-dev
     - name: Install dependencies
-      env:
-        PGHOST: localhost
-        PGUSER: postgres
-        RAILS_ENV: test
       run: bundle install
     - name: Run tests
-      env:
-        PGHOST: localhost
-        PGUSER: postgres
-        RAILS_ENV: test
-      run: bundle exec rake
+      run: |
+        bundle exec rails db:create
+        bundle exec rails db:migrate
+        bundle exec rake
