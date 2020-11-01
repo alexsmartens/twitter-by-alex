@@ -13,6 +13,6 @@ class User < ApplicationRecord
     # - Password length should be less than or equal to 72 bytes
     # - (optional) Confirmation of password (using a XXX_confirmation attribute)
     # Also, automatically adds authenticate method to the User objects
-    has_secure_password
-    validates :password, length: {minimum: 6}
+    has_secure_password validations: false
+    validates :password, presence: true, confirmation: true, length: {minimum: 6}
 end
