@@ -29,15 +29,6 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-    - name: Install PostgreSQL client
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y postgresql-client libpq-dev
-
-    - name: Configure databases
-      run: |
-        echo "Postgres"
-        psql -h localhost -c 'create database "db/twitter_test";' -U postgres
 
     - name: Checkout code
       uses: actions/checkout@v2
@@ -49,6 +40,16 @@ jobs:
       uses: ruby/setup-ruby@ec106b438a1ff6ff109590de34ddc62c540232e0
       with:
         ruby-version: 2.6
+
+    - name: Install PostgreSQL client
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y postgresql-client libpq-dev
+
+    - name: Configure databases
+      run: |
+        echo "Postgres"
+        psql -h localhost -c 'create database "db/twitter_test";' -U postgres
 
     - name: Install dependencies
       run: bundle install
