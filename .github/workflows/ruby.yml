@@ -57,7 +57,10 @@ jobs:
           POSTGRES_USER: twitter_admin
           POSTGRES_PASSWORD: test
 
-      - name: Run tests
+      - name: Pre-compile webpacks prior to booting
+        run: NODE_ENV=test bundle exec rails webpacker:compile
+      
+        - name: Run tests
         env:
           RAILS_ENV: test
         run: |
