@@ -6,7 +6,8 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
     # authenticate is provided by has_secure_password
     if user && user.authenticate(params[:session][:password])
-      # Log the user in and redurect ti user's show page
+      log_in user
+      redirect_to user  # same as 'redirect_to user_url(user)'
     else
       flash.now[:danger] = 'Invalid email/password combination'
       render 'new'
