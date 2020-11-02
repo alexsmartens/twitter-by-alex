@@ -3,6 +3,14 @@ class SessionsController < ApplicationController
   end
 
   def create
+    user = User.find_by(email: params[:session][:email].downcase)
+    # authenticate is provided by has_secure_password
+    if user && user.authenticate(params[:session][:password])
+      # Log the user in and redurect ti user's show page
+    else
+      # Create an error message 
+      render 'new'
+    end
   end
 
   def destroy
