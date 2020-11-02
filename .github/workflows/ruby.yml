@@ -60,7 +60,7 @@ jobs:
       - name: Pre-compile webpacks prior to booting
         run: NODE_ENV=test bundle exec rails webpacker:compile
       
-        - name: Run tests
+      - name: Run tests
         env:
           RAILS_ENV: test
         run: |
