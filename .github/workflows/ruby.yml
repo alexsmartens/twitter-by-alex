@@ -58,7 +58,9 @@ jobs:
           POSTGRES_PASSWORD: test
 
       - name: Pre-compile webpacks prior to booting
-        run: NODE_ENV=test bundle exec rails webpacker:compile
+        run: |
+          yarn install --check-files
+          NODE_ENV=test bundle exec rails webpacker:compile
       
       - name: Run tests
         env:
