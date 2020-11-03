@@ -5,7 +5,8 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(email: params[:session][:email].downcase)
     # authenticate is provided by has_secure_password
-    if user && user.authenticate(params[:session][:password])
+    # 'obj&.method' is the same as 'obj && obj.method'
+    if user&.authenticate(params[:session][:password])
       log_in user
       redirect_to user  # same as 'redirect_to user_url(user)'
     else
