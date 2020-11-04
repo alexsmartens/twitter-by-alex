@@ -2,6 +2,10 @@ module SessionsHelper
 
   # Logs in the given user
   def log_in(user)
+    # The session object already exists when the page is loaded, so we just need 
+    # to append it with whatever we want to store persistently between user 
+    # requests (browsing the website) 
+    
     # This places a TEMPORARY cookie on the user’s browser containing an ENCRYPTED 
     # version of the user’s id, , which allows us to retrieve the id on subsequent 
     # pages using session[:user_id]. A temprary cookie expires immediately 
