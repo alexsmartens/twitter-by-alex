@@ -1,5 +1,5 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
-  <div class="container"> 
+  <div class="container">
     <%= link_to  "twitter sample app", root_path, id: "logo" %>
     <nav>
       <div class="navbar-header">
@@ -30,7 +30,7 @@
               <%= link_to "Log out", logout_path, method: "delete" %>
               </li>
             </ul>
-          </li> 
+          </li>
         <% else %>
           <li><%= link_to "Log in", login_path %></li>
         <% end %>

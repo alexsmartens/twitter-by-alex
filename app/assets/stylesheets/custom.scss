@@ -54,7 +54,7 @@ h2 {
   text-align: center;
   font-weight: normal;
   /* $gray-light is @grayLight that is shipped with bootstrap-sprockets https://getbootstrap.com/2.0.4/less.html */
-  color: $gray-light; 
+  color: $gray-light;
 }
 
 p {
@@ -105,7 +105,7 @@ footer {
       float: left;
       margin-left: 15px;
     }
-  } 
+  }
 }
 // Applied when a device width is less than 800px (intended for mobile)
 @media (max-width: 800px) {
@@ -168,24 +168,24 @@ aside {
 
 /* forms */
 
-input, textarea, select, .uneditable-input { 
+input, textarea, select, .uneditable-input {
     border: 1px solid #bbb;
     width: 100%;
     margin-bottom: 15px;
-    @include box_sizing; 
+    @include box_sizing;
   }
-  
+
   input {
     height: auto !important;
   }
-  
+
   #error_explanation {
     color: red; ul {
     color: red;
     margin: 0 0 30px 0; }
   }
 
-  // Rials automatically wraps fields with errors in divs of this class   
+  // Rials automatically wraps fields with errors in divs of this class
   .field_with_errors { @extend .has-error; .form-control {
     color: $state-danger-text; }
     }
@@ -199,4 +199,3 @@ input, textarea, select, .uneditable-input {
     margin-top: 45px;
     @include box_sizing;
   }
-  

@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UsersLoginTest < ActionDispatch::IntegrationTest
 
-  def setup 
+  def setup
     @user = users(:michael)
   end
 
@@ -26,7 +26,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", logout_path, count: 1
     # 7. Verify that a profile link appears.
     assert_select "a[href=?]", user_path(@user), count: 1
-    
+
     # Log out
     delete logout_path
     assert_not is_logged_in?
@@ -36,7 +36,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", logout_path, count: 0
     assert_select "a[href=?]", user_path(@user), count: 0
   end
-  
+
   test "login with valid email/invalid password" do
     # 1. Visit the login path.
     get login_path
@@ -54,7 +54,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     # 6. Verify that the flash message doesn’t appear on the new page.
     assert flash.empty?
   end
-  
+
   test "login with invalid information" do
     # 1. Visit the login path.
     get login_path

@@ -17,7 +17,7 @@ class UsersController < ApplicationController
       log_in @user
       flash[:success] = "Welcome to the Twitter Sample App!"
       redirect_to @user  # the same as redirect_to user_url(@user)
-    else 
+    else
       render 'new'
     end
   end
