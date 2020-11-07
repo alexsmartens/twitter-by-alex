@@ -74,4 +74,17 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     # 6. Verify that the flash message doesn’t appear on the new page.
     assert flash.empty?
   end
+
+  test "login with remembering" do
+    log_in_as(@user, remember_me: '1')
+    assert_not_nil cookies[:remember_token]
+  end
+
+  test "login without remembering" do
+    # Log in to set the cookie
+    log_in_as(@user, remember_me: '1')
+    # Log in again and verify that the cookie is deleted
+    log_in_as(@user, remember_me: '0')
+    assert_empty cookies[:remember_token]
+  end
 end
