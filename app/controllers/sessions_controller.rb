@@ -8,8 +8,8 @@ class SessionsController < ApplicationController
     # 'obj&.method' is the same as 'obj && obj.method'
     if user&.authenticate(params[:session][:password])
       log_in user
-      remember user
-      redirect_to user  # same as 'redirect_to user_url(user)'
+      params[:session][:remember_me] == '1' ? remember(user) : forget(user)
+      redirect_to user  # same as 'redirect_to user_url(userlex)'
     else
       flash.now[:danger] = 'Invalid email/password combination'
       render 'new'
