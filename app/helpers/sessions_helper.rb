@@ -21,7 +21,7 @@ module SessionsHelper
   end
 
   # Returns the current logged-in user (if any)
-  def current_user
+  def get_current_user
     if @current_user
       @current_user
     elsif session[:user_id]
@@ -38,7 +38,7 @@ module SessionsHelper
 
   # Returns true if the user is logged in, false otherwise
   def logged_in?
-    !!current_user
+    !!get_current_user
   end
 
   # Logs out the current user
