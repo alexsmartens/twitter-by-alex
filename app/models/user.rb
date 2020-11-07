@@ -29,7 +29,7 @@ class User < ApplicationRecord
     SecureRandom.urlsafe_base64
   end
 
-  # [Instance method] Remembers a user in the database for use in persistant session
+  # [Instance method] Remembers a user in the database for use in persistent session
   def remember
     self.remember_token = User.new_token  # cannot use self.new_token here coz
       # 'self' would refer to the instance instead of referring to the class
@@ -39,6 +39,11 @@ class User < ApplicationRecord
   # [Instance method] Returns true if the given token matches the digest
   def authenticated?(remember_token)
     BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  end
+
+  # [Instance method] Forget a user
+  def forget
+    update_attribute(:remember_digest, nil)
   end
 
 end
