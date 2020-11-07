@@ -77,7 +77,10 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test "login with remembering" do
     log_in_as(@user, remember_me: '1')
-    # 'assigns' apparently allows to access current controller instance variables
+    # assigns: hash that stores all INSTANCE variables assigned in the actions that
+    # are available for the view, more:
+    # https://guides.rubyonrails.org/v4.2/testing.html
+    # https://api.rubyonrails.org/v4.2.5/classes/ActionController/TestCase.html
     assert_equal cookies[:remember_token], assigns(:user).remember_token
   end
 
