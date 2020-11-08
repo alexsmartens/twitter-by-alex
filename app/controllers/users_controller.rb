@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :logged_in_user, only: [:edit, :update]
 
   # [GET] Handles requests to /users/id
   def show
@@ -48,5 +49,12 @@ class UsersController < ApplicationController
       # 2. If a permitted attribute is not present than it is considered to be an
       # empty string
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    end
+
+    def logged_in_user
+      unless logged_in?
+        flash[:danger] = "Please log in"
+        redirect_to login_url
+      end
     end
 end
