@@ -1,15 +1,16 @@
 class UsersController < ApplicationController
 
-  # Action, that handles get requests to /users/id
+  # [GET] Handles requests to /users/id
   def show
     @user = User.find(params[:id])
   end
 
+  # [GET] Signup page
   def new
     @user = User.new
   end
 
-  # Action, that handles post requests /users (by default)
+  # [POST] Handles requests to /users/id
   def create
     @user = User.new(user_params)
     if @user.save
@@ -22,11 +23,16 @@ class UsersController < ApplicationController
     end
   end
 
+  # [GET] Handles requests to /users/id/edit
+  def edit
+    @user = User.find(params[:id])
+  end
+
 
   private
 
     def user_params
-      # If a permitted attribute is not present than it is considered to be an 
+      # If a permitted attribute is not present than it is considered to be an
       # empty string
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
