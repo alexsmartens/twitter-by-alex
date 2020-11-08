@@ -16,7 +16,7 @@ class ActiveSupport::TestCase
 
   # Returns true if the user is logged in, false otherwise
   def is_logged_in?
-    !session[:user_id].nil?
+    !session[:user_id].nil? || cookies[:remember_token]
   end
 
   # Log in as a particular user
