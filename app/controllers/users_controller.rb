@@ -28,11 +28,23 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  # [PATCH] Handles PATCH requests to /users/id/edit
+  def update
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      #
+    else
+      render 'edit'
+    end
+  end
 
   private
 
     def user_params
-      # If a permitted attribute is not present than it is considered to be an
+      # 1. Only permitted attributes can be assigned/dealt with in this way, this
+      # avoids assigning the attributes that are not intended to be assigned by
+      # the users.
+      # 2. If a permitted attribute is not present than it is considered to be an
       # empty string
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
