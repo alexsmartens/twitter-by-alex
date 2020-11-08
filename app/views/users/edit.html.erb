@@ -27,8 +27,15 @@
     <% end %>
 
     <div class="gravatar_edit"> <%= gravatar_for @user %>
-      <%# ' target="_blank" ' - opens the link in a new window %>
-      <a href="https://gravatar.com/emails" target="_blank">change</a>
-    </div> </div>
+      <%# 1. target="_blank" - opens the link in a new window %>
+      <%# 2. There’s a minor security issue associated with using target="_blank"
+              to open URLs—namely, the target site gains control of the
+              “window object” associated with the HTML document. As a result,
+              the target site could potentially introduce malicious content,
+              such as a phishing page. This risk can be eliminated entirely
+              by setting the rel attribute (“relationship”) to "noopener"
+              in the origin link %>
+      <a href="https://gravatar.com/emails" target="_blank" rel=”noopener”>change</a>
+    </div>
   </div>
 </div>
