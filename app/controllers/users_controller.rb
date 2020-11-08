@@ -28,7 +28,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  # [PATCH] Handles PATCH requests to /users/id/edit
+  # [PATCH] Handles PATCH requests to /users/id
   def update
     @user = User.find(params[:id])
     if @user.update(user_params)
