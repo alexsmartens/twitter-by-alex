@@ -1,0 +1,22 @@
+<%= form_with(model: @user, local: true) do |f| %>
+  <%# 1. When constructing a form using form_with(@user), Rails uses POST
+        if @user.new_record? is true and PATCH if it is false. %>
+  <%# 2. Since web browsers can’t natively send PATCH requests Rails fakes
+        it with a POST request and a HIDDEN INPUT field (this field can be
+        checked when the form is rendered with a web inspector) %>
+  <%= render 'shared/error_messages'%>
+
+  <%= f.label :name %>
+  <%= f.text_field :name, class: 'form-control' %>
+
+  <%= f.label :email %>
+  <%= f.email_field :email, class: 'form-control' %>
+
+  <%= f.label :password %>
+  <%= f.password_field :password, class: 'form-control' %>
+
+  <%= f.label :password_confirmation, "Confirmation" %>
+  <%= f.password_field :password_confirmation, class: 'form-control' %>
+
+  <%= f.submit yield(:button_text), class: "btn btn-primary" %>
+<% end %>
