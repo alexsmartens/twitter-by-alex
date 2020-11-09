@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:index, :edit, :update]
-  before_action :correct_user, only: [:edit, :update]
+  before_action :logged_in_user?, only: [:index, :edit, :update, :destroy]
+  before_action :correct_user?, only: [:edit, :update]
+  before_action :admin_user?, only: :destroy
 
   # [GET] Handles requests to /users
   def index
@@ -47,6 +48,14 @@ class UsersController < ApplicationController
     end
   end
 
+  # [DELETE] Deletes users, requests to /users/id
+  def destroy
+    user = User.find(params[:id])
+    user.destroy
+    flash[:success] = "User #{user.name} deleted"
+    redirect_to users_url
+  end
+
   private
 
     def user_params
@@ -58,7 +67,7 @@ class UsersController < ApplicationController
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
 
-    def logged_in_user
+    def logged_in_user?
       unless logged_in?
         store_location
         flash[:danger] = "Please log in"
@@ -66,11 +75,17 @@ class UsersController < ApplicationController
       end
     end
 
-    def correct_user
+    # Confirms the user attempts to do an action on him-/herself
+    def correct_user?
       @user = User.find(params[:id])
       unless  current_user?(@user)
         flash[:danger] = "Access denied"
         redirect_to(root_url)
       end
+    end
+
+    # Confirms that the user is admin
+    def admin_user?
+      redirect_to(root_url) unless get_current_user.admin?
     end
 end
