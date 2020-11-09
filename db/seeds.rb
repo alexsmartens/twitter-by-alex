@@ -18,6 +18,7 @@ User.create!(
   email: "alex@example.com",
   password: "123456",
   password_confirmation: "123456",
+  admin: true,
 )
 
 # Generate a bunch of additional users
