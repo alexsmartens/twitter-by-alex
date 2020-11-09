@@ -12,7 +12,7 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
-  # [POST] Handles requests to /users/id
+  # [POST] Creates new users based on the sign up requests, requests to /users/id
   def create
     @user = User.new(user_params)
     if @user.save
@@ -30,7 +30,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  # [PATCH] Handles PATCH requests to /users/id
+  # [PATCH] Updates user info, requests to /users/id
   def update
     @user = User.find(params[:id])
     if @user.update(user_params)
@@ -54,6 +54,7 @@ class UsersController < ApplicationController
 
     def logged_in_user
       unless logged_in?
+        store_location
         flash[:danger] = "Please log in"
         redirect_to login_url
       end

@@ -59,4 +59,19 @@ module SessionsHelper
     session.delete(:user_id)
     @current_user = nil
   end
+
+  # Redirects to stored location (or to the default)
+  def redirect_back_or(default)
+    # The session deletion occurs even though the line with the redirect appears
+    # first; (!!) redirects don’t happen until an explicit return or the end of
+    # the method, so any code appearing after the redirect is still executed
+
+    redirect_to(session[:forwarding_url] || default)
+    session.delete(:forwarding_url)
+  end
+
+  # Stores the URL trying to be accessed
+  def store_location
+    session[:forwarding_url] = request.original_url if request.get?
+  end
 end
