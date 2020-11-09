@@ -4,7 +4,8 @@ class UsersController < ApplicationController
 
   # [GET] Handles requests to /users
   def index
-    @users = User.all
+    page_num = params[:page].to_i > 0 ? params[:page].to_i : 1
+    @users = User.paginate(page: page_num)
   end
 
   # [GET] Handles requests to /users/id
