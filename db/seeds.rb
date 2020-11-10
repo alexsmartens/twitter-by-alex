@@ -12,6 +12,8 @@ User.create!(
   email: "example@railstutorial.org",
   password: "123456",
   password_confirmation: "123456",
+  activated: true,
+  activated_at: Time.zone.now,
 )
 User.create!(
   name: "Alex M",
@@ -19,6 +21,8 @@ User.create!(
   password: "123456",
   password_confirmation: "123456",
   admin: true,
+  activated: true,
+  activated_at: Time.zone.now,
 )
 
 # Generate a bunch of additional users
@@ -34,5 +38,7 @@ User.create!(
     email: email,
     password: password,
     password_confirmation: password,
+    activated: true,
+    activated_at: Time.zone.now,
    )
 end
