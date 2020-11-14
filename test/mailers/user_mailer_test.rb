@@ -6,11 +6,6 @@ class UserMailerTest < ActionMailer::TestCase
     user.activation_token = User.new_token
     mail = UserMailer.account_activation(user)
 
-    puts "\n:::: (1) mail object:"
-    puts mail.inspect
-    puts "\n:::: (4) mail.body:"
-    puts mail.body.encoded
-
     assert_equal "Account activation", mail.subject
     assert_equal [user.email], mail.to
     assert_equal ["noreply@example.com"], mail.from
