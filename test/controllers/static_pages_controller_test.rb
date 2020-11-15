@@ -2,7 +2,7 @@ require 'test_helper'
 
 class StaticPagesControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @base_title = "Twitter Sample App"
+    @base_title = "Twitter by Alex App"
   end
 
   test "should get home" do
