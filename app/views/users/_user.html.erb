@@ -5,7 +5,7 @@
     <%# Web browsers can’t send DELETE requests natively, so Rails fakes them
     with Java-Script. As a consequence, the delete links won’t work if the user
     has JavaScript disabled. If you must support non-JavaScript-enabled browsers,
-    you can fake a DELETE request using a form and a POST request, which 
+    you can fake a DELETE request using a form and a POST request, which
     works even without JavaScript %>
     | <%= link_to "delete", user, method: :delete,
       data: {confirm: "You sure?" } %>
