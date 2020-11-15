@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ApplicationHelperTest  <  ActionView::TestCase
   def setup
-    @base_title = "Twitter Sample App"
+    @base_title = "Twitter by Alex App"
   end
 
   test "full title helper" do
