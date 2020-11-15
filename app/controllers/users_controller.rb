@@ -6,12 +6,13 @@ class UsersController < ApplicationController
   # [GET] Handles requests to /users
   def index
     page_num = params[:page].to_i > 0 ? params[:page].to_i : 1
-    @users = User.paginate(page: page_num)
+    @users = User.where(activated: true).paginate(page: page_num)
   end
 
   # [GET] Handles requests to /users/id
   def show
-    @user = User.find(params[:id])
+    @user = User.find_by(id: params[:id])
+    redirect_to root_url and return unless @user&.activated?
   end
 
   # [GET] Signup page
@@ -77,7 +78,7 @@ class UsersController < ApplicationController
 
     # Confirms the user attempts to do an action on him-/herself
     def correct_user?
-      @user = User.find(params[:id])
+      @user = User.find_by(id: params[:id])
       unless  current_user?(@user)
         flash[:danger] = "Access denied"
         redirect_to(root_url)
