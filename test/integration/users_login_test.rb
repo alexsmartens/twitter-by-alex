@@ -78,7 +78,11 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   test "login with remembering" do
     log_in_as(@user, remember_me: '1')
     # assigns: hash that stores all INSTANCE variables assigned in the actions that
-    # are available for the view, more:
+    # are available for the view. For example, the Users controller’s create
+    # action defines an @user variable, so we can access it in the test using
+    # assigns(:user). The assigns method is deprecated in default Rails tests
+    # as of Rails 5, but it is still useful in many contexts, and it’s available
+    # via the rails-controller-testing gem. For more:
     # https://guides.rubyonrails.org/v4.2/testing.html
     # https://api.rubyonrails.org/v4.2.5/classes/ActionController/TestCase.html
     assert_equal cookies[:remember_token], assigns(:user).remember_token
