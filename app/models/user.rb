@@ -57,11 +57,11 @@ class User < ApplicationRecord
 
   # [Instance method] Changes the user's activation status to 'active'
   def activate
-    assign_attributes({
+    # Update multiple attributes at the same time without validation
+    update_columns(
       activated: true,
       activated_at: Time.zone.now
-    })
-    save(validate: false)
+    )
   end
 
   # [Instance method] Sends out a user activation email
