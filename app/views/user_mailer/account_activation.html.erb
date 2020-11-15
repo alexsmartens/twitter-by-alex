@@ -2,6 +2,9 @@
 
 <p>Hi <%= @user.name %>,</p>
 
-<p>Welcome to the Twitter by Alex App! Click the link below to activate your account:</p>
+<p>Welcome to Twitter by Alex! Click the link below to activate your account:</p>
 
 <%= link_to "Activate", edit_account_activation_url(@user.activation_token, email: @user.email) %>
+
+Best regards,
+Alex
