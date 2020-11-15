@@ -1,5 +1,6 @@
 class User < ApplicationRecord
-  attr_accessor :remember_token, :activation_token
+  attr_accessor :activation_token,  # used for account activation
+                :remember_token    # used for persistent sessions
   # before_save: called every time an object is saved. So for NEW and EXISTING
   # objects. (create and update action)
   before_save :downcase_email
@@ -43,9 +44,10 @@ class User < ApplicationRecord
   end
 
   # [Instance method] Returns true if the given token matches the digest
-  def authenticated?(remember_token)
-    return false if remember_digest.nil?
-    BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  def authenticated?(attribute, token)
+    digest = send("#{attribute}_digest")  # same as self.send(..), where self refers to the instance
+    return false if digest.nil?
+    BCrypt::Password.new(digest).is_password?(token)
   end
 
   # [Instance method] Forget a user
@@ -62,8 +64,6 @@ class User < ApplicationRecord
 
     # Creates and assigns the activation token and digest
     def create_activation_digest
-      puts "---------|-create_activation_digest-|---------"
-
       self.activation_token = User.new_token
       self.activation_digest = User.digest(activation_token)
     end
