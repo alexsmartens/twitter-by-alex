@@ -1,5 +1,8 @@
 Hi <%= @user.name %>,
 
-Welcome to the Twitter by Alex App! Click the link below to activate your account:
+Welcome to Twitter by Alex! Click the link below to activate your account:
 
 <%= edit_account_activation_url(@user.activation_token, email: @user.email) %>
+
+Best regards,
+Alex
