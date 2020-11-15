@@ -55,6 +55,20 @@ class User < ApplicationRecord
     update_attribute(:remember_digest, nil)
   end
 
+  # [Instance method] Changes the user's activation status to 'active'
+  def activate
+    assign_attributes({
+      activated: true,
+      activated_at: Time.zone.now
+    })
+    save(validate: false)
+  end
+
+  # [Instance method] Sends out a user activation email
+  def send_activation_email
+    UserMailer.account_activation(self).deliver_now
+  end
+
 
   private
 
