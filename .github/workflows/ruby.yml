@@ -32,12 +32,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set environment up variables
+      - name: Set up environment up variables
         id: step_one
         run: |
-            echo "test" >> $RAILS_ENV
-            echo "twitter_admin" >> $POSTGRES_USER
-            echo "test" >> $POSTGRES_PASSWORD
+            echo "RAILS_ENV=test" >> $GITHUB_ENV
+            echo "POSTGRES_USER=twitter_admin" >> $GITHUB_ENV
+            echo "POSTGRES_PASSWORD=test" >> $GITHUB_ENV
 
       - name: Set up Ruby
         # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
