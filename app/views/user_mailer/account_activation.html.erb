@@ -1,8 +1,8 @@
 <p>Hi <%= @user.name %>,</p>
 
 <p>Welcome to Twitter by Alex! Click this link to activate your account:
-<%= link_to "Activate", edit_account_activation_url(@user.activation_token, email: @user.email) %>
+<%= link_to "activate", edit_account_activation_url(@user.activation_token, email: @user.email) %>.
 </p>
 
-<p>Best regards,</p>
-<p>Team <%= link_to "Twitter by Alex", root_url %></p>
+<p>Best regards,<br>
+Team <%= link_to "Twitter by Alex", root_url %></p>
