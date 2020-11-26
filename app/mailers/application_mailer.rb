@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'noreply@twitter-by-alex.herokuapp.com'
+  default from: ENV['GMAIL_USERNAME'],
   layout 'mailer'
 end
