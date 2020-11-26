@@ -1,10 +1,8 @@
-<h1>Twitter by Alex App</h1>
-
 <p>Hi <%= @user.name %>,</p>
 
-<p>Welcome to Twitter by Alex! Click the link below to activate your account:</p>
-
+<p>Welcome to Twitter by Alex! Click this link to activate your account:
 <%= link_to "Activate", edit_account_activation_url(@user.activation_token, email: @user.email) %>
+</p>
 
-Best regards,
-Alex
+<p>Best regards,</p>
+<p>Team <%= link_to "Twitter by Alex", root_url %></p>
