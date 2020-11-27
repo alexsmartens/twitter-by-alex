@@ -33,7 +33,7 @@ class UserSignupTest < ActionDispatch::IntegrationTest
 
   test "valid signup information with account activation" do
     get signup_path
-    assert_difference 'User.count' do
+    assert_difference 'User.count', 1 do
       post users_path, params: {
         user: {
           name: "Example User",
@@ -58,17 +58,44 @@ class UserSignupTest < ActionDispatch::IntegrationTest
     # Try log in before activation
     log_in_as(user)
     assert_not is_logged_in?
+
     # Invalid activation token
     get edit_account_activation_path("invalid token", email: user.email)
+    follow_redirect!
+    assert_template 'static_pages/home'
+    assert_not flash.empty?
+    assert_select "div.alert.alert-warning", "Incorrect activation token!"
     # Invalid activation email
     assert_not is_logged_in?
+
     get edit_account_activation_path(user.activation_token, email: "wrong")
+    follow_redirect!
+    assert_template 'static_pages/home'
+    assert_not flash.empty?
+    assert_select "div.alert.alert-warning", "Incorrect activation token!"
+    # Invalid activation email
+    assert_not is_logged_in?
+
     # Valid activation token
     get edit_account_activation_path(user.activation_token, email: user.email)
     assert user.reload.activated?
     follow_redirect!
     assert_template 'users/show'
     assert is_logged_in?
+
+    # Invalid login:
+    # Second time for already activated user (with valid activation token and email)
+    # Log out
+    delete logout_path
+    assert_not is_logged_in?
+    assert user.activated?
+    # Try to login with the token
+    get edit_account_activation_path(user.activation_token, email: user.email)
+    follow_redirect!
+    assert_template 'static_pages/home'
+    assert_not flash.empty?
+    assert_select "div.alert.alert-warning", "Your account is already activated!"
+    assert_not is_logged_in?
   end
 
 end
