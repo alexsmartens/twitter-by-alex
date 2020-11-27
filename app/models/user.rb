@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   attr_accessor :activation_token,  # used for account activation
-                :remember_token    # used for persistent sessions
+                :remember_token,    # used for persistent sessions
+                :reset_token        # used for password reset
   # before_save: called every time an object is saved. So for NEW and EXISTING
   # objects. (create and update action)
   before_save :downcase_email
@@ -67,6 +68,20 @@ class User < ApplicationRecord
   # [Instance method] Sends out a user activation email
   def send_activation_email
     UserMailer.account_activation(self).deliver_now
+  end
+
+  # Sets the password reset attributes
+  def create_reset_digest
+    self.reset_token = User.new_token
+    update_columns(
+      reset_digest:  User.digest(reset_token),
+      reset_sent_at: Time.zone.now
+    )
+  end
+
+  # Sends password reset email
+  def send_password_reset_email
+    UserMailer.password_reset(self).deliver_now
   end
 
 
