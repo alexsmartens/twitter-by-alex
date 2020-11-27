@@ -18,9 +18,9 @@ class AccountActivationsController < ApplicationController
     def valid_user
       unless @user && !@user.activated? && @user.authenticated?(:activation, params[:id])
         if @user && @user.activated?
-          flash[:warning] = "Your account is already activated!"
+          flash[:danger] = "Your account is already activated!"
         else
-          flash[:warning] = "Incorrect activation token!"
+          flash[:danger] = "Incorrect activation token!"
         end
         redirect_to root_url
       end
