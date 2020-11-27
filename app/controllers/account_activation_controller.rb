@@ -7,6 +7,13 @@ class AccountActivationController < ApplicationController
       log_in user
       flash[:success] = "Account activated!"
       redirect_to user
+    else
+      if user && user.activated?
+        flash[:warning] = "Your account is already activated!"
+      else
+        flash[:warning] = "Incorrect activation token!"
+      end
+      redirect_to root_url
     end
   end
 end
