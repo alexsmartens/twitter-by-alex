@@ -94,6 +94,14 @@ class User < ApplicationRecord
     reset_sent_at < 2.hours.ago
   end
 
+  # Voids password reset attributes
+  def void_password_reset
+    update_columns(
+      reset_digest:  nil,
+      reset_sent_at: nil
+    )
+  end
+
   private
 
     def downcase_email
