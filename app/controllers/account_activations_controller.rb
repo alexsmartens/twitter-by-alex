@@ -20,7 +20,7 @@ class AccountActivationsController < ApplicationController
         if @user && @user.activated?
           flash[:danger] = "Your account is already activated!"
         else
-          flash[:danger] = "Incorrect activation token!"
+          flash[:danger] = "Incorrect activation link!"
         end
         redirect_to root_url
       end

@@ -36,13 +36,13 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
     get edit_password_reset_path(user.reset_token, email: "")
     follow_redirect!
     assert_not flash.empty?
-    assert_select "div.alert.alert-danger", "Incorrect activation token!"
+    assert_select "div.alert.alert-danger", "Incorrect activation link!"
 
     # (2) Right email but wrong token
     get edit_password_reset_path("wrong_token", email: user.email)
     follow_redirect!
     assert_not flash.empty?
-    assert_select "div.alert.alert-danger", "Incorrect activation token!"
+    assert_select "div.alert.alert-danger", "Incorrect activation link!"
 
     # (3) Inactive user
     # Changes the value of a boolean and skips validation, alternatively

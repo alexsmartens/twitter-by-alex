@@ -23,7 +23,7 @@ class PasswordResetsController < ApplicationController
   def update
     if @user.update(user_params)
       log_in @user
-      flash[:success] = "Password has been reset"
+      flash[:success] = "Your password has been reset"
       redirect_to @user
     else
       render 'edit'
@@ -54,7 +54,7 @@ class PasswordResetsController < ApplicationController
           flash[:danger] = "Your account should be activated before proceeding!"\
                            " Please check your email from earlier"
         else
-          flash[:danger] = "Incorrect activation token!"
+          flash[:danger] = "Incorrect activation link!"
         end
         redirect_to root_url
       end

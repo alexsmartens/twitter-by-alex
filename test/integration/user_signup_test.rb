@@ -64,7 +64,7 @@ class UserSignupTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_template 'static_pages/home'
     assert_not flash.empty?
-    assert_select "div.alert.alert-danger", "Incorrect activation token!"
+    assert_select "div.alert.alert-danger", "Incorrect activation link!"
     # Invalid activation email
     assert_not is_logged_in?
 
@@ -72,7 +72,7 @@ class UserSignupTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_template 'static_pages/home'
     assert_not flash.empty?
-    assert_select "div.alert.alert-danger", "Incorrect activation token!"
+    assert_select "div.alert.alert-danger", "Incorrect activation link!"
     # Invalid activation email
     assert_not is_logged_in?
 
