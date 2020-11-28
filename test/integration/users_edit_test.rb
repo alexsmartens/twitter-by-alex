@@ -46,8 +46,8 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_template 'users/edit'
 
     # Check number of errors [!! UI shows 4 errors in this case]
-    assert_select 'div.alert', 'The form contains 3 errors.'
-    # assert_select 'div.alert', 'The form contains 4 errors.'
+    assert_select 'div.alert', 'The form contains 3 errors'
+    # assert_select 'div.alert', 'The form contains 4 errors'
 
     # Check error messages [this is Alex's idea, hence there is might be a
     # better way to do it]
