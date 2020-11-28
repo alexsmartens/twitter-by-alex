@@ -50,7 +50,12 @@ class PasswordResetsController < ApplicationController
     # Confirms a valid user
     def valid_user
       unless @user && @user.activated? && @user.authenticated?(:reset, params[:id])
-        flash[:danger] = "Incorrect activation token!"
+        if @user && !@user.activated?
+          flash[:danger] = "Your account should be activated before proceeding!"\
+                           " Please check your email from earlier"
+        else
+          flash[:danger] = "Incorrect activation token!"
+        end
         redirect_to root_url
       end
     end
