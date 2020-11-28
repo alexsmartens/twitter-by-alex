@@ -78,6 +78,18 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
     assert is_logged_in?
     assert_not flash.empty?
     assert_redirected_to user
+
+    # (6) Reset link used second time (should be invalid)
+    delete logout_path
+    assert_not is_logged_in?
+    patch password_reset_path(user.reset_token),
+    params: { email: user.email,
+              user: { password: "foobar",
+                      password_confirmation: "foobar" } }
+    assert_not is_logged_in?
+    follow_redirect!
+    assert_not flash.empty?
+    assert_select "div.alert.alert-danger", "Incorrect activation token!"
   end
 
   test "expired token" do
