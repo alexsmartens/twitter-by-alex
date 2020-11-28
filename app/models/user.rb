@@ -2,6 +2,7 @@ class User < ApplicationRecord
   attr_accessor :activation_token,  # used for account activation
                 :remember_token,    # used for persistent sessions
                 :reset_token        # used for password reset
+  has_many :microposts
   # before_save: called every time an object is saved. So for NEW and EXISTING
   # objects. (create and update action)
   before_save :downcase_email
