@@ -19,11 +19,15 @@ class User < ApplicationRecord
   # added automatically:
   # - Password must be present on creation (but allows blank passwords " ")
   # - Password length should be less than or equal to 72 bytes
-  # - (optional) Confirmation of password (using a XXX_confirmation attribute)
-  # Also, automatically adds authenticate method to the User objects
+  # - (optional*) password_confirmation must much password if password_confirmation
+  # is not nil (password_confirmation value is an empty string if this field
+  # is present on the form, hence it should match password in this case).
+  # * On the contrary,  if confirmation validation is not needed, simply leave out
+  # the value for password_confirmation (i.e. don't provide a form field for it).
+  # When this attribute has a nil value, the validation will not be triggered. For
+  # more info: https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html
   has_secure_password
-  validates :password, presence: true, confirmation: true, length: {minimum: 6},
-    allow_nil: true
+  validates :password, presence: true, length: {minimum: 6}, allow_nil: true
   validate :change_requested?
 
   # [Class method] Returns the hash digest of the given string
