@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   attr_accessor :activation_token,  # used for account activation
-                :remember_token    # used for persistent sessions
+                :remember_token,    # used for persistent sessions
+                :reset_token        # used for password reset
   # before_save: called every time an object is saved. So for NEW and EXISTING
   # objects. (create and update action)
   before_save :downcase_email
@@ -18,11 +19,16 @@ class User < ApplicationRecord
   # added automatically:
   # - Password must be present on creation (but allows blank passwords " ")
   # - Password length should be less than or equal to 72 bytes
-  # - (optional) Confirmation of password (using a XXX_confirmation attribute)
-  # Also, automatically adds authenticate method to the User objects
+  # - (optional*) password_confirmation must much password if password_confirmation
+  # is not nil (password_confirmation value is an empty string if this field
+  # is present on the form, hence it should match password in this case).
+  # * On the contrary,  if confirmation validation is not needed, simply leave out
+  # the value for password_confirmation (i.e. don't provide a form field for it).
+  # When this attribute has a nil value, the validation will not be triggered. For
+  # more info: https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html
   has_secure_password
-  validates :password, presence: true, confirmation: true, length: {minimum: 6},
-    allow_nil: true
+  validates :password, presence: true, length: {minimum: 6}, allow_nil: true
+  validate :change_requested?
 
   # [Class method] Returns the hash digest of the given string
   def User.digest(string)  # alternative: "self.digest(string)"
@@ -69,6 +75,32 @@ class User < ApplicationRecord
     UserMailer.account_activation(self).deliver_now
   end
 
+  # Sets the password reset attributes
+  def create_reset_digest
+    self.reset_token = User.new_token
+    update_columns(
+      reset_digest:  User.digest(reset_token),
+      reset_sent_at: Time.zone.now
+    )
+  end
+
+  # Sends password reset email
+  def send_password_reset_email
+    UserMailer.password_reset(self).deliver_now
+  end
+
+  # Returns tru if a password reset token has expired
+  def password_reset_expired?
+    reset_sent_at < 2.hours.ago
+  end
+
+  # Voids password reset attributes
+  def void_password_reset
+    update_columns(
+      reset_digest:  nil,
+      reset_sent_at: nil
+    )
+  end
 
   private
 
@@ -80,5 +112,16 @@ class User < ApplicationRecord
     def create_activation_digest
       self.activation_token = User.new_token
       self.activation_digest = User.digest(activation_token)
+    end
+
+    def change_requested?
+      # changed_attribute_names_to_save - returns a hash of the attributes that
+      # will change when the record is next saved https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Dirty.html
+      if changed_attribute_names_to_save.length > 0
+        return true
+      else
+        errors.add(:base, "No field has been changed")
+        return false
+      end
     end
 end
