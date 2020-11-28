@@ -11,6 +11,9 @@ module SessionsHelper
     # pages using session[:user_id]. A temporary cookie expires immediately
     # when the browser is closed.
     session[:user_id] = user.id
+
+    # Void password reset attributes to eliminate double logging in with the same link
+    user.void_password_reset
   end
 
   # Remembers a user in a persistent session
