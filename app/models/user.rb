@@ -24,6 +24,7 @@ class User < ApplicationRecord
   has_secure_password
   validates :password, presence: true, confirmation: true, length: {minimum: 6},
     allow_nil: true
+  validate :change_requested?
 
   # [Class method] Returns the hash digest of the given string
   def User.digest(string)  # alternative: "self.digest(string)"
@@ -95,5 +96,16 @@ class User < ApplicationRecord
     def create_activation_digest
       self.activation_token = User.new_token
       self.activation_digest = User.digest(activation_token)
+    end
+
+    def change_requested?
+      # changed_attribute_names_to_save - returns a hash of the attributes that
+      # will change when the record is next saved https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Dirty.html
+      if changed_attribute_names_to_save.length > 0
+        return true
+      else
+        errors.add(:base, "No field has been changed")
+        return false
+      end
     end
 end
