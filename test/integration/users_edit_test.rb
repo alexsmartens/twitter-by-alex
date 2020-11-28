@@ -56,4 +56,23 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     # assert_select 'li', "Password confirmation doesn't match Password"
     assert_select 'li', "Password is too short (minimum is 6 characters)"
   end
+
+  test "unsuccessful edit with empty params" do
+    log_in_as(@user)
+    get edit_user_path(@user)
+    assert_template 'users/edit'
+    patch user_path(@user), params: {
+      user: {
+        name: @user.name,
+        email: @user.email,
+        password: "",
+        password_confirm: "",
+      }
+    }
+
+    assert_template 'users/edit'
+
+    assert_select 'div.alert', 'The form contains 1 error'
+    assert_select 'li', "No field has been changed"
+  end
 end
