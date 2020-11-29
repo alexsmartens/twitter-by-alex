@@ -46,6 +46,10 @@ end
 # Generate microposts
 users = User.order(:created_at).take(6)
 50.times do |n|
-  content = Faker::Lorem.sentence(word_count: 3 + (n/5).to_i )
+  if n < 49 && rand < 0.8
+    content = Faker::Lorem.sentence(word_count: 3 + (n/5).to_i )
+  else
+    content = Faker::ChuckNorris.fact
+  end
   users.each { |user| user.microposts.create!(content: content) }
 end
