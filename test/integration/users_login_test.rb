@@ -25,7 +25,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     # 6. Verify that a logout link appears
     assert_select "a[href=?]", logout_path, count: 1
     # 7. Verify that a profile link appears
-    assert_select "a[href=?]", user_path(@user), count: 1
+    assert_select "a[href=?]", user_path(@user)
 
     # Log out
     delete logout_path
