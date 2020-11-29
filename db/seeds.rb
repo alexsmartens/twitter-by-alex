@@ -42,3 +42,10 @@ User.create!(
     activated_at: Time.zone.now,
    )
 end
+
+# Generate microposts
+users = User.order(:created_at).take(6)
+50.times do |n|
+  content = Faker::Lorem.sentence(word_count: 3 + (n/5).to_i )
+  users.each { |user| user.microposts.create!(content: content) }
+end
