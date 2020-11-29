@@ -2,7 +2,9 @@ class User < ApplicationRecord
   attr_accessor :activation_token,  # used for account activation
                 :remember_token,    # used for persistent sessions
                 :reset_token        # used for password reset
-  has_many :microposts
+  # dependent: :destroy, ensures that the related records in the corresponding
+  # table (microposts in this case) are destroyed when a user is destroyed
+  has_many :microposts, dependent: :destroy
   # before_save: called every time an object is saved. So for NEW and EXISTING
   # objects. (create and update action)
   before_save :downcase_email
