@@ -16,8 +16,10 @@
   <span class="image">
     <%# (1) the id of the below field is "micropost_image" and the name
           is "micropost[image]""
+        (2) 'accept: "image/jpeg,image/gif,image/png"' allows only valid images
+          to be selected by graying out any other file types
     %>
-    <%= f.file_field :image%>
+    <%= f.file_field :image, accept: "image/jpeg,image/gif,image/png" %>
   </span>
   <%= f.submit "Post", class: "btn btn-primary" %>
 <% end %>
