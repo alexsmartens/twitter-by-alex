@@ -12,7 +12,8 @@ class UsersController < ApplicationController
   # [GET] Handles requests to /users/id
   def show
     @user = User.find_by(id: params[:id])
-    @microposts = @user.microposts.paginate(page: params[:page])
+    page_num = params[:page].to_i > 0 ? params[:page].to_i : 1
+    @microposts = @user.microposts.paginate(page: page_num)
     redirect_to root_url and return unless @user&.activated?
   end
 
