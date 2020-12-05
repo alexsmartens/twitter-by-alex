@@ -1,5 +1,12 @@
 <% if logged_in? %>
-  <%= render "home_logged_in" %>
+  <%# relative referencing of partials (eg. 'render "home_logged_in"')
+      considers the partial ("home_logged_in") to be a partial of
+      a different controller when its parent ("home.html.erb") is rendered in
+      a different controller (eg. from microposts_controller)
+      but not from its parent controller ("static_pages_controller").
+      Absolute referencing solves this problem, e.g. render "static_pages/home_logged_in"
+  %>
+  <%= render "static_pages/home_logged_in" %>
 <% else %>
-  <%= render "home_not_logged_in" %>
+  <%= render "static_pages/home_not_logged_in" %>
 <% end %>
