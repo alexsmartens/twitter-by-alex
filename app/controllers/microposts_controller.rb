@@ -6,8 +6,13 @@ class MicropostsController < ApplicationController
     @micropost = get_current_user.microposts.build(micropost_params)
     if @micropost.save
       flash[:success] = "Micropost created!"
+      redirect_to root_url
+    else
+      # This case requires rendering the page because redirecting would never
+      # show errors keeping the user uniformed if the post was not saved and why
+      @feed_items = get_current_user.feed.paginate(page: params[:page])
+      render 'static_pages/home'
     end
-    redirect_to root_url
   end
 
   def destroy
