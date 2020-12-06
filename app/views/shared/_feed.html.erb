@@ -1,0 +1,9 @@
+<% if get_current_user.microposts.any? %>
+  <ol class="microposts">
+    <%= render @feed_items %>
+  </ol>
+  <%# params: {controller: :static_pages, action: :home} fixes a micropost
+      indexing/pagination problem after an invalid micropost post call is issued
+  %>
+  <%= will_paginate @feed_items, params: {controller: :static_pages, action: :home} %>
+<% end %>

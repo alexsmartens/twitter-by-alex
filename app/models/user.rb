@@ -105,6 +105,13 @@ class User < ApplicationRecord
     )
   end
 
+  def feed
+    microposts
+    # For some reason that will be apparent in Chapter 14, the book suggests
+    # the following code instead of the line above:
+    # Micropost.where("user_id = ", id)
+  end
+
   private
 
     def downcase_email
