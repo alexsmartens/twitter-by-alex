@@ -1,3 +1,5 @@
+include ApplicationHelper
+
 class MicropostsController < ApplicationController
   before_action :logged_in_user?, only: [:create, :destroy]
   before_action :correct_user?, only: :destroy
@@ -11,7 +13,7 @@ class MicropostsController < ApplicationController
     else
       # This case requires rendering the page because redirecting would never
       # show errors keeping the user uniformed if the post was not saved and why
-      @feed_items = get_current_user.feed.paginate(page: params[:page])
+      @feed_items = get_current_user.feed.paginate(page: validate_page_num(params[:page]))
       render 'static_pages/home'
     end
   end

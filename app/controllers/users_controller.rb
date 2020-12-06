@@ -1,3 +1,5 @@
+include ApplicationHelper
+
 class UsersController < ApplicationController
   before_action :logged_in_user?, only: [:index, :edit, :update, :destroy]
   before_action :correct_user?, only: [:edit, :update]
@@ -5,16 +7,13 @@ class UsersController < ApplicationController
 
   # [GET] Handles requests to /users
   def index
-    page_num = params[:page].to_i > 0 ? params[:page] : 1
-    @users = User.where(activated: true).paginate(page: page_num)
+    @users = User.where(activated: true).paginate(page: validate_page_num(params[:page]))
   end
 
   # [GET] Handles requests to /users/id
   def show
     @user = User.find_by(id: params[:id])
-    page_num = params[:page].to_i > 0 ? params[:page] : 1
-    @microposts = @user.microposts.paginate(page: page_num)
-    redirect_to root_url and return unless @user&.activated?
+    @microposts = @user.microposts.paginate(page: validate_page_num(params[:page]))
   end
 
   # [GET] Signup page
