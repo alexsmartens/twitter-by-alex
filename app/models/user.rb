@@ -9,6 +9,9 @@ class User < ApplicationRecord
   has_many :active_relationships, class_name: "Relationship",
                                   foreign_key: "follower_id",
                                   dependent: :destroy
+  # "source: :followed" - allows to override the default reference source, which
+  #  means we could use "following" instead of "followeds" (which would be a default)
+  has_many :following, through: :active_relationships, source: :followed
   # before_save: called every time an object is saved. So for NEW and EXISTING
   # objects. (create and update action)
   before_save :downcase_email
@@ -114,6 +117,21 @@ class User < ApplicationRecord
     # For some reason that will be apparent in Chapter 14, the book suggests
     # the following code instead of the line above:
     # Micropost.where("user_id = ", id)
+  end
+
+  # Follows a user
+  def follow(other_user)
+    following << other_user
+  end
+
+  # Unfollows a user
+  def unfollow(other_user)
+    following.delete(other_user)
+  end
+
+  # Returns true if the current user is following the other user
+  def following?(other_user)
+    following.include?(other_user)
   end
 
   private
