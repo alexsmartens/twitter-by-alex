@@ -10,12 +10,21 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     get root_path
     assert_select "div.pagination", count: 1
     assert_select "input[type=file]"
+
     # Invalid submission
     assert_no_difference "Micropost.count" do
       post microposts_path, params: {micropost: {content: ""}}
     end
     assert_select "div#error_explanation"
     assert_select "a[href=?]", "/?page=2"  # Correct pagination link
+
+    # Valid content with Invalid image (large image > 5Mb)
+    content = "This micropost really ties the room together"
+    image = fixture_file_upload("test/fixtures/bugatti_chiron.jpg", "image/jpeg")
+    post microposts_path, params: {micropost: {content: content, image: image}}
+    micropost  = assigns(:micropost)
+    assert micropost.image.attached?
+
     # Valid submission
     content = "This micropost really ties the room together"
     # fixture_file_upload - is rails method for uploading files in tests
@@ -25,6 +34,7 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     end
     micropost  = assigns(:micropost)
     assert micropost.image.attached?
+
     # Visit different user (no delete links)
     get user_path(users(:archer))
     assert "a", text: "delete", count: 0
