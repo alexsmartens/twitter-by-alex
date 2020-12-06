@@ -14,7 +14,7 @@ module ApplicationHelper
   def validate_page_num(page_num)
     begin
       Integer(page_num) > 0 ? page_num : 1
-    rescue ArgumentError
+    rescue ArgumentError, TypeError
       1
     end
   end
