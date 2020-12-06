@@ -5,13 +5,24 @@ class User < ApplicationRecord
   # dependent: :destroy, ensures that the related records in the corresponding
   # table (microposts in this case) are destroyed when a user is destroyed
   has_many :microposts, dependent: :destroy
+
   # 'class_name' is to be specified if the underlying model has a different name
   has_many :active_relationships, class_name: "Relationship",
                                   foreign_key: "follower_id",
                                   dependent: :destroy
-  # "source: :followed" - allows to override the default reference source, which
-  #  means we could use "following" instead of "followeds" (which would be a default)
+  has_many :passive_relationships, class_name: "Relationship",
+                                   foreign_key: "followed_id",
+                                   dependent: :destroy
+  # Notes:
+  #   1) "has_many :following ..." is a proxy (or a mirror) of
+  #      "has_many :active_relationships ..."
+  #   2) "source: :followed" - allows to override the default reference source,
+  #      which means we could use "following" instead of "followeds" (which
+  #      would be a default). In other words, this change directs Rails to look
+  #      for "followed_id"
   has_many :following, through: :active_relationships, source: :followed
+  has_many :followers, through: :passive_relationships, source: :follower
+
   # before_save: called every time an object is saved. So for NEW and EXISTING
   # objects. (create and update action)
   before_save :downcase_email
