@@ -15,5 +15,10 @@ module TwitterByAlex
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    # Include the authenticity token in remote forms (needed for the Ajax actions
+    # to degrade gracefully (in other words, for Ajax actions to work fine in
+    # browsers that have JavaScript disabled)
+    config.action_view.embed_authenticity_token_in_remote_forms = true
   end
 end
