@@ -1,20 +1,20 @@
+include ApplicationHelper
+
 class UsersController < ApplicationController
-  before_action :logged_in_user?, only: [:index, :edit, :update, :destroy]
+  before_action :logged_in_user?, only: [:index, :edit, :update, :destroy,
+                                         :following, :followers]
   before_action :correct_user?, only: [:edit, :update]
   before_action :admin_user?, only: :destroy
 
   # [GET] Handles requests to /users
   def index
-    page_num = params[:page].to_i > 0 ? params[:page] : 1
-    @users = User.where(activated: true).paginate(page: page_num)
+    @users = User.where(activated: true).paginate(page: validate_page_num(params[:page]))
   end
 
   # [GET] Handles requests to /users/id
   def show
     @user = User.find_by(id: params[:id])
-    page_num = params[:page].to_i > 0 ? params[:page] : 1
-    @microposts = @user.microposts.paginate(page: page_num)
-    redirect_to root_url and return unless @user&.activated?
+    @microposts = @user.microposts.paginate(page: validate_page_num(params[:page]))
   end
 
   # [GET] Signup page
@@ -57,6 +57,26 @@ class UsersController < ApplicationController
     user.destroy
     flash[:success] = "User #{user.name} deleted"
     redirect_to users_url
+  end
+
+  # [GET] Renders users who the selected user is following
+  def following
+    @title = "Following"
+    @user = User.find(params[:id])
+    @users = @user.following.paginate(page: validate_page_num(params[:page]))
+    # 'render "show_follow"' - renders a non-default template (a default in this
+    # case would be following.html.erb)
+    render "show_follow"
+  end
+
+  # [GET] Renders users who are following the selected user
+  def followers
+    @title = "Followers"
+    @user = User.find(params[:id])
+    @users = @user.followers.paginate(page: validate_page_num(params[:page]))
+    # 'render "show_follow"' - renders a non-default template (a default in this
+    # case would be followers.html.erb)
+    render "show_follow"
   end
 
   private

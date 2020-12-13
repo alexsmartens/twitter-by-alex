@@ -1,0 +1,9 @@
+<%# JavaScript embedded Ruby %>
+
+<%# Notes:
+      1) '$("#follow_form")' - is a div that wraps the form, not the form itself.
+      2)'$("#follow_form").html("foobar")' - is an alternative to
+        'Rails.$("#follow_form")[0].innerHTML = ("foobar")'
+%>
+$("#follow_form").html("<%= escape_javascript(render('users/unfollow')) %>");
+$("#followers").html('<%= @user.followers.count %>');

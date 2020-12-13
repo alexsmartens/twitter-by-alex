@@ -5,6 +5,24 @@ class User < ApplicationRecord
   # dependent: :destroy, ensures that the related records in the corresponding
   # table (microposts in this case) are destroyed when a user is destroyed
   has_many :microposts, dependent: :destroy
+
+  # 'class_name' is to be specified if the underlying model has a different name
+  has_many :active_relationships, class_name: "Relationship",
+                                  foreign_key: "follower_id",
+                                  dependent: :destroy
+  has_many :passive_relationships, class_name: "Relationship",
+                                   foreign_key: "followed_id",
+                                   dependent: :destroy
+  # Notes:
+  #   1) "has_many :following ..." is a proxy (or a mirror) of
+  #      "has_many :active_relationships ..."
+  #   2) "source: :followed" - allows to override the default reference source,
+  #      which means we could use "following" instead of "followeds" (which
+  #      would be a default). In other words, this change directs Rails to look
+  #      for "followed_id"
+  has_many :following, through: :active_relationships, source: :followed
+  has_many :followers, through: :passive_relationships, source: :follower
+
   # before_save: called every time an object is saved. So for NEW and EXISTING
   # objects. (create and update action)
   before_save :downcase_email
@@ -106,10 +124,43 @@ class User < ApplicationRecord
   end
 
   def feed
-    microposts
-    # For some reason that will be apparent in Chapter 14, the book suggests
-    # the following code instead of the line above:
-    # Micropost.where("user_id = ", id)
+    # Notes:
+    #
+    #   1) `following_ids` returns ids of the `following` users. This method is
+    #      provided by ActiveRecord based on the has_many :following association;
+    #      the result is that we need to just append _ids to the association name
+    #      to get the ids corresponding to the user.following collection.
+    #
+    #   2) The problem with `Micropost.where(user_id: following_ids << id)` is
+    #      that `following_ids` is the array stored in the memory. We can use
+    #      raw SQL to eliminate this issue as in the code below.
+    #
+    #   3) `my_str = <<-HEREDOC ... HEREDOC` - is a ruby string syntax called
+    #      heredoc or "here document", for more info: https://ruby-doc.org/core-2.5.0/doc/syntax/literals_rdoc.html
+
+    following_ids_sql = <<-SUBQUERY
+      SELECT followed_id
+      FROM relationships
+        WHERE follower_id = :user_id
+    SUBQUERY
+
+    Micropost.where("user_id IN (#{following_ids_sql})
+                     OR user_id = :user_id", user_id: id)
+  end
+
+  # Follows a user
+  def follow(other_user)
+    following << other_user
+  end
+
+  # Unfollows a user
+  def unfollow(other_user)
+    following.delete(other_user)
+  end
+
+  # Returns true if the current user is following the other user
+  def following?(other_user)
+    following.include?(other_user)
   end
 
   private

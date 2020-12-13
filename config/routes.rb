@@ -8,9 +8,21 @@ Rails.application.routes.draw do
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
-  # Generate a full suite of RESTful routes automatically
-  resources :users
+  # "resources :resource" - automatically generate a full suite of RESTful routes
+  resources :users do
+    # "member" method adds additional routes to respond to URLs containing
+    # the user id, eg. "/users/id/following" and "/users/id/followers"
+    member do
+      get :following, :followers
+    end
+    # "collection" method adds additional routes to respond to URLs without the
+    # id, eg. "/users/tigers" as in the method below
+    #     collection do
+    #       get :tigers
+    #     end
+  end
   resources :account_activations, only: [:edit]
   resources :password_resets, only: [:new, :create, :edit, :update]
   resources :microposts, only: [:create, :destroy]
+  resources :relationships, only: [:create, :destroy]
 end

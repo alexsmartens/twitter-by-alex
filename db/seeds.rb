@@ -8,19 +8,18 @@
 
 # Create a main sample users
 User.create!(
-  name: "Example User",
-  email: "example@railstutorial.org",
+  name: "Alex M",
+  email: "alex@example.com",
   password: "123456",
   password_confirmation: "123456",
   activated: true,
   activated_at: Time.zone.now,
 )
 User.create!(
-  name: "Alex M",
-  email: "alex@example.com",
+  name: "Example User",
+  email: "example@railstutorial.org",
   password: "123456",
   password_confirmation: "123456",
-  admin: true,
   activated: true,
   activated_at: Time.zone.now,
 )
@@ -53,3 +52,11 @@ users = User.order(:created_at).take(6)
   end
   users.each { |user| user.microposts.create!(content: content) }
 end
+
+# Create following relationships
+users = User.all
+user = users.first
+following = users[2..50]
+followers = users[3..40]
+following.each { |followed| user.follow(followed) }
+followers.each { |follower| follower.follow(user) }
