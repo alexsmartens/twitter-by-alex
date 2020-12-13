@@ -4,6 +4,8 @@
 /* mixins, variables, etc. */
 
 $gray-medium-light: #eaeaea;
+$blue-menu: #00aced;
+$white-menu: #FBFBFB;
 // Use bootstrap Less reference for other color variables. They are
 // shipped with bootstrap-sprockets https://getbootstrap.com/2.0.4/less.html
 
@@ -65,21 +67,20 @@ p {
 
 /* header */
 
-#logo {
-  float: left;
-  margin-right: 10px;
-  font-size: 1.7em;
-  color: white;
-  text-transform: uppercase;
-  letter-spacing: -1px;
-  padding-top: 9px;
-  font-weight: bold;
-  &:hover{
-    color: white;
-    text-decoration: none;
-  }
+.navbar-fixed-top {
+  background-color: $white-menu;
+  border-bottom: 1px solid $blue-menu;
 }
 
+.icon-bar {
+  background-color: $blue-menu;
+}
+
+#logo {
+  float: left;
+  font-size: 1.7em;
+  padding-top: 9px;
+}
 
 
 /* footer */
