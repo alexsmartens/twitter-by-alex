@@ -57,6 +57,9 @@ h2 {
   font-weight: normal;
   /* $gray-light is @grayLight that is shipped with bootstrap-sprockets https://getbootstrap.com/2.0.4/less.html */
   color: $gray-light;
+  &.bottom {
+    margin-bottom: 0;
+  }
 }
 
 p {
@@ -318,3 +321,8 @@ span.image {
     margin-top: 45px;
     @include box_sizing;
   }
+
+.container .logo {
+  margin-top: 50px;
+  margin-bottom: 40px;
+}
