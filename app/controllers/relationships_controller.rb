@@ -6,6 +6,10 @@ class RelationshipsController < ApplicationController
     @user = User.find(params[:followed_id])
     get_current_user.follow(@user)
     # Process an Ajax request (add a web-service support to the action)
+    # Note: apparently rails responds to a request with the corresponding view
+    #       even though the view is in *.js.erb. Hence, the respond_to is
+    #       apparently only needed to respond with html when requested. This
+    #       can be verified with the 'following' integrations tests.
     respond_to do |format|
       # Generates the response in one of the formats listed below, depending on
       # what format the client has requested. More info: https://api.rubyonrails.org/classes/ActionController/MimeResponds.html#method-i-respond_to
@@ -24,6 +28,10 @@ class RelationshipsController < ApplicationController
     @user = Relationship.find(params[:id]).followed
     get_current_user.unfollow(@user)
     # Process an Ajax request (add a web-service support to the action)
+    # Note: apparently rails responds to a request with the corresponding view
+    #       even though the view is in *.js.erb. Hence, the respond_to is
+    #       apparently only needed to respond with html when requested. This
+    #       can be verified with the 'following' integrations tests.
     respond_to do |format|
       # Generates the response in one of the formats listed below, depending on
       # what format the client has requested. More info: https://api.rubyonrails.org/classes/ActionController/MimeResponds.html#method-i-respond_to
