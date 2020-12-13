@@ -124,7 +124,28 @@ class User < ApplicationRecord
   end
 
   def feed
-    Micropost.where(user_id: following_ids << id)
+    # Notes:
+    #
+    #   1) `following_ids` returns ids of the `following` users. This method is
+    #      provided by ActiveRecord based on the has_many :following association;
+    #      the result is that we need to just append _ids to the association name
+    #      to get the ids corresponding to the user.following collection.
+    #
+    #   2) The problem with `Micropost.where(user_id: following_ids << id)` is
+    #      that `following_ids` is the array stored in the memory. We can use
+    #      raw SQL to eliminate this issue as in the code below.
+    #
+    #   3) `my_str = <<-HEREDOC ... HEREDOC` - is a ruby string syntax called
+    #      heredoc or "here document", for more info: https://ruby-doc.org/core-2.5.0/doc/syntax/literals_rdoc.html
+
+    following_ids_sql = <<-SUBQUERY
+      SELECT followed_id
+      FROM relationships
+        WHERE follower_id = :user_id
+    SUBQUERY
+
+    Micropost.where("user_id IN (#{following_ids_sql})
+                     OR user_id = :user_id", user_id: id)
   end
 
   # Follows a user
