@@ -1,6 +1,6 @@
 <% provide(:title, @user.name) %>
 <div class="row">
-  <aside class="col-md-4">
+  <aside class="col-md-3" id="user-side-info" data-spy="affix">
     <section class="user_info">
       <h1>
         <%= gravatar_for @user %>
@@ -11,7 +11,7 @@
       <%= render "shared/stats" %>
     </section>
   </aside>
-  <div class="col-md-8">
+  <div class="col-md-8 col-md-offset-4">
     <%= render "follow_form" if logged_in? %>
     <% if @user.microposts.any? %>
       <h3>Microposts (<%= @user.microposts.count %>)</h3>

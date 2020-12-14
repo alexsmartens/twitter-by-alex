@@ -3,6 +3,15 @@
 
 /* mixins, variables, etc. */
 
+/* BREAKS */
+
+$break-mobile: 500px;
+$break-ipad: 768px;
+$break-after-ipad: 767px;
+$break-desktop: 1002px;
+
+/* COLORS */
+
 $gray-medium-light: #eaeaea;
 $blue-menu: #00aced;
 $white-menu: #FBFBFB;
@@ -157,6 +166,14 @@ aside {
       margin-bottom: 3px;
       margin-top: 0px;
     }
+  }
+}
+
+#user-side-info {
+  margin-right: 15px;
+  margin-left: 15px;
+  @media screen and (max-width: $break-after-ipad) {
+    position: relative;
   }
 }
 
