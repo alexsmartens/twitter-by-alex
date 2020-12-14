@@ -1,25 +1,35 @@
 <% provide(:title, @user.name) %>
-<div class="row">
-  <%# 'data-offset-bottom' - stops the side bar when it reaches the footer %>
-  <aside class="col-md-3" id="sidebar" data-spy="affix" data-offset-bottom="100">
-    <section class="user_info">
-      <h1>
-        <%= gravatar_for @user %>
-        <%= @user.name %>
-      </h1>
-    </section>
-    <section class="stats">
-      <%= render "shared/stats" %>
-    </section>
-  </aside>
-  <div class="col-md-8 col-md-offset-4">
-    <%= render "follow_form" if logged_in? %>
-    <% if @user.microposts.any? %>
-      <h3>Microposts (<%= @user.microposts.count %>)</h3>
-      <ol class="microposts">
-        <%= render @microposts %>
-      </ol>
-      <%= will_paginate @microposts %>
-    <% end %>
-  <div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <%# 'data-offset-bottom' - stops the side bar when it reaches the footer %>
+      <aside id="sidebar" data-spy="affix" data-offset-bottom="100" style="visibility: hidden">
+        <section class="user_info">
+          <h1>
+            <%= gravatar_for @user %>
+            <%= @user.name %>
+          </h1>
+        </section>
+        <section class="stats">
+          <%= render "shared/stats" %>
+        </section>
+      </aside>
+    </div>
+    <div class="col-md-8">
+      <div id="content-container">
+      <%= render "follow_form" if logged_in? %>
+        <h3>Microposts (<%= @user.microposts.count %>)</h3>
+        <% if @user.microposts.any? %>
+          <ol class="microposts">
+            <%= render @microposts %>
+          </ol>
+          <%= will_paginate @microposts %>
+        <% else %>
+          <ol class="microposts">
+            <%= render partial: "microposts/empty_micropost" %>
+          </ol>
+        <% end %>
+      </div>
+  </div>
 </div>

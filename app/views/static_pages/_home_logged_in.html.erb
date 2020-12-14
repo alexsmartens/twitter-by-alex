@@ -2,21 +2,39 @@
 <div class="container">
   <div class="row">
     <div class="col-md-4">
-      <%# 'data-offset-bottom' - stops the side bar when it reaches the footer %>
+      <%# "data-offset-bottom" - stops the side bar when it reaches the footer %>
       <aside id="sidebar" data-spy="affix" data-offset-bottom="100" style="visibility: hidden">
         <section class="user_info">
-          <%= render 'shared/user_info' %>
+          <%= render "shared/user_info" %>
         </section>
         <section class="stats">
           <%= render "shared/stats" %>
         </section>
         <section class="micropost_form">
-          <%= render 'shared/micropost_form' %>
+          <%= render "shared/micropost_form" %>
         </section>
       </aside>
     </div>
     <div class="col-md-8">
-      <h3>My Microposts</h3>
-      <%= render 'shared/feed' %>
+      <div id="content-container">
+        <h3>My Microposts</h3>
+        <% if get_current_user.microposts.count > 0 %>
+          <ol class="microposts">
+            <%= render @feed_items %>
+          </ol>
+          <%# params: {controller: :static_pages, action: :home} fixes a micropost
+              indexing/pagination problem after an invalid micropost post call is issued
+          %>
+          <%= will_paginate @feed_items, params: {controller: :static_pages, action: :home} %>
+        <% else %>
+          <ol class="microposts">
+            <%= render partial: "microposts/empty_micropost",
+                       locals: {
+                          msg: "... you do not have any microposts yet ..."
+                        }
+            %>
+          </ol>
+        <% end %>
+      </div>
   </div>
 </div>
