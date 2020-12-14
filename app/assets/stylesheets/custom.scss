@@ -98,6 +98,7 @@ p {
 /* footer */
 
 footer {
+  height: 100px;
   margin-top: 45px;
   padding-top: 5px;
   border-top: 1px solid $gray-medium-light;
@@ -121,7 +122,7 @@ footer {
   }
 }
 // Applied when a device width is less than 800px (intended for mobile)
-@media (max-width: 800px) {
+@media (max-width: $break-ipad) {
   footer {
     small {
       display: block;
@@ -169,12 +170,18 @@ aside {
   }
 }
 
-#user-side-info {
+#sidebar {
   margin-right: 15px;
   margin-left: 15px;
+  position: fixed;
   @media screen and (max-width: $break-after-ipad) {
     position: relative;
   }
+}
+
+// Stop the side bar when it reaches the footer
+#sidebar .affix-bottom {
+  position: static;
 }
 
 .gravatar {

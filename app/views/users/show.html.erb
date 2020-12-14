@@ -1,6 +1,7 @@
 <% provide(:title, @user.name) %>
 <div class="row">
-  <aside class="col-md-3" id="user-side-info" data-spy="affix">
+  <%# 'data-offset-bottom' - stops the side bar when it reaches the footer %>
+  <aside class="col-md-3" id="sidebar" data-spy="affix" data-offset-bottom="100">
     <section class="user_info">
       <h1>
         <%= gravatar_for @user %>
