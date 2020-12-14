@@ -12,5 +12,27 @@
       <%= render  "layouts/footer" %>
       <%= debug(params) if Rails.env.development? %>
     </div>
+
+    <script>
+      /* Show and resize sidebar on window load */
+      $(document).ready(function() {
+        // BUG potential: page is loaded multiple times which causes flickering
+
+        // let $affixElement = $('aside[data-spy="affix"]');
+        let $sidebar = $("#sidebar");
+        resize_width_to_parent($sidebar);
+        $sidebar.css("visibility", "visible");
+      });
+      /* Resize sidebar on page resize */
+      $(window).on("resize", function(){
+        let $sidebar = $("#sidebar");
+        resize_width_to_parent($sidebar);
+      });
+      /* Make the passed element width equal to the parent width */
+      function resize_width_to_parent($element) {
+        $element.width($element.parent().width());
+      }
+    </script>
+
   </body>
 </html>

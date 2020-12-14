@@ -174,7 +174,7 @@ aside {
   margin-right: 15px;
   margin-left: 15px;
   position: fixed;
-  @media screen and (max-width: $break-after-ipad) {
+  @media (max-width: $break-desktop) {
     position: relative;
   }
 }
