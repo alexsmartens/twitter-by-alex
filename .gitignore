@@ -45,3 +45,6 @@ yarn-debug.log*
 
 # OS specific files
 .DS_Store
+
+# Generated assets
+app/javascript/packs/dist/
