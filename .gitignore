@@ -42,3 +42,6 @@ yarn-debug.log*
 
 # Ignore code editor files
 /.vscode
+
+# OS specific files
+.DS_Store
