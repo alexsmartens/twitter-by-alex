@@ -1,10 +1,16 @@
 <div class="center jumbotron">
   <h1>Welcome to Twitter by Alex</h1>
   <h2>
-      This app was designed with the <a href="https://www.railstutorial.org/">
-      Ruby on Rails Tutorial</a>.
+    Your privacy is important here! Freely share your opinion without trackers
+    and annoying ads
   </h2>
+  <div class="main-logo-wrapper">
+    <%= link_to image_tag("logo.svg", alt: "Twitter By Alex logo", width: "200") %>
+  </div>
   <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
+  <h2 class="bottom">
+    <a href="https://github.com/alexsmartens">Alex</a> designed this twitter in
+    Ruby on Rails with transparency in mind, our source code is available
+    <a href="https://github.com/alexsmartens/twitter-by-alex">here</a>
+  </h2>
 </div>
-
-<%= link_to image_tag("rails.svg", alt: "Rails logo", width: "200"), "https://rubyonrails.org/" %>
