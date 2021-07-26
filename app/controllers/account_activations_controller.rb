@@ -6,7 +6,7 @@ class AccountActivationsController < ApplicationController
     @user.activate
     log_in @user
     flash[:success] = "Account activated!"
-    redirect_back_or root_url
+    redirect_to @user
   end
 
   private
