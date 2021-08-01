@@ -12,5 +12,38 @@
       <%= render  "layouts/footer" %>
       <%= debug(params) if Rails.env.development? %>
     </div>
+
+    <script>
+      /* Control sidebar and content-container on window load */
+      $(document).ready(function() {
+        // BUG (potential): page is loaded multiple times which causes flickering
+
+        /* Show and resize sidebar on window load */
+        // let $affixElement = $('aside[data-spy="affix"]');
+        let $sidebar = $("#sidebar");
+        resize_width_to_parent($sidebar);
+        $sidebar.css("visibility", "visible");
+
+        /* Imitate content if there is not enough in the container */
+        if ($sidebar.parent().parent().height() <= 350) {
+          $("#content-container").css("height", 350);
+          // BUG (potential): sidebar jumps down on refresh, the below line
+          // is a temporary fix
+          $sidebar.css("top", $sidebar.parent().parent().offset().top);
+        }
+      });
+
+      /* Resize sidebar on page resize */
+      $(window).on("resize", function(){
+        let $sidebar = $("#sidebar");
+        resize_width_to_parent($sidebar);
+      });
+
+      /* Make the passed element width equal to the parent width */
+      function resize_width_to_parent($element) {
+        $element.width($element.parent().width());
+      }
+    </script>
+
   </body>
 </html>
