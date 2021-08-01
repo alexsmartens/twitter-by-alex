@@ -6,20 +6,30 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+
+require 'securerandom'
+
+def generate_random_password(length=10)
+  SecureRandom.alphanumeric(length)
+end
+
+
 # Create a main sample users
+password1 = generate_random_password()
 User.create!(
   name: "Alex M",
   email: "alex@example.com",
-  password: "123456",
-  password_confirmation: "123456",
+  password: password1,
+  password_confirmation: password1,
   activated: true,
   activated_at: Time.zone.now,
 )
+password2 = generate_random_password()
 User.create!(
   name: "Example User",
   email: "example@railstutorial.org",
-  password: "123456",
-  password_confirmation: "123456",
+  password: password2,
+  password_confirmation: password2,
   activated: true,
   activated_at: Time.zone.now,
 )
@@ -28,7 +38,7 @@ User.create!(
 98.times do |n|
   name = Faker::Name.name
   email = "example-#{n+1}@railstutorial.org"
-  password = "123456"
+  password = generate_random_password()
 
   # 'create!' method is just like the 'create' method, except it raises an
   # exception if user validation fails rather than returning false
