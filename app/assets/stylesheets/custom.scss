@@ -3,7 +3,18 @@
 
 /* mixins, variables, etc. */
 
+/* BREAKS */
+
+$break-mobile: 500px;
+$break-ipad: 768px;
+$break-after-ipad: 767px;
+$break-desktop: 1002px;
+
+/* COLORS */
+
 $gray-medium-light: #eaeaea;
+$blue-menu: #00aced;
+$white-menu: #FBFBFB;
 // Use bootstrap Less reference for other color variables. They are
 // shipped with bootstrap-sprockets https://getbootstrap.com/2.0.4/less.html
 
@@ -55,6 +66,9 @@ h2 {
   font-weight: normal;
   /* $gray-light is @grayLight that is shipped with bootstrap-sprockets https://getbootstrap.com/2.0.4/less.html */
   color: $gray-light;
+  &.bottom {
+    margin-bottom: 0;
+  }
 }
 
 p {
@@ -65,26 +79,26 @@ p {
 
 /* header */
 
-#logo {
-  float: left;
-  margin-right: 10px;
-  font-size: 1.7em;
-  color: white;
-  text-transform: uppercase;
-  letter-spacing: -1px;
-  padding-top: 9px;
-  font-weight: bold;
-  &:hover{
-    color: white;
-    text-decoration: none;
-  }
+.navbar-fixed-top {
+  background-color: $white-menu;
+  border-bottom: 1px solid $blue-menu;
 }
 
+.icon-bar {
+  background-color: $blue-menu;
+}
+
+#logo {
+  float: left;
+  font-size: 1.7em;
+  padding-top: 9px;
+}
 
 
 /* footer */
 
 footer {
+  height: 100px;
   margin-top: 45px;
   padding-top: 5px;
   border-top: 1px solid $gray-medium-light;
@@ -108,7 +122,7 @@ footer {
   }
 }
 // Applied when a device width is less than 800px (intended for mobile)
-@media (max-width: 800px) {
+@media (max-width: $break-ipad) {
   footer {
     small {
       display: block;
@@ -154,6 +168,20 @@ aside {
       margin-top: 0px;
     }
   }
+}
+
+#sidebar {
+  margin-right: 15px;
+  margin-left: 15px;
+  position: fixed;
+  @media (max-width: $break-desktop) {
+    position: relative;
+  }
+}
+
+// Stop the side bar when it reaches the footer
+#sidebar .affix-bottom {
+  position: static;
 }
 
 .gravatar {
@@ -317,3 +345,8 @@ span.image {
     margin-top: 45px;
     @include box_sizing;
   }
+
+.main-logo-wrapper {
+  margin-top: 50px;
+  margin-bottom: 40px;
+}
