@@ -19,7 +19,7 @@ gem 'jbuilder', '2.10.0'
 gem 'bootsnap', '1.7.2', require: false
 
 # Required for the sample app
-gem 'image_processing',           '1.9.3'
+gem 'image_processing',           '1.12.2'
 gem 'mini_magick',                '4.9.5'
 gem 'active_storage_validations', '0.8.9'
 gem 'bcrypt',                     '3.1.13'
