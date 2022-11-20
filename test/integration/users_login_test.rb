@@ -16,9 +16,10 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     # 4.1. Assert user logged in
     assert is_logged_in?
     # 4.2. Assert that the user is redirected to his page
-    assert_redirected_to @user
+    assert_redirected_to root_path
     follow_redirect!
-    assert_template "users/show"
+    # assert_template "users/show"
+
     # 5. Verify that the login link disappears.
     # Assert that there are N links <a href="/">...</a> on the page
     assert_select "a[href=?]", login_path, count: 0
