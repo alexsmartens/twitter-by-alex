@@ -46,6 +46,10 @@ group :development do
   # background. Read more: https://github.com/rails/spring
   gem 'spring', '2.1.1'
   gem 'rack-mini-profiler', '2.3.1'
+  # Adding pry on its own has some issues with keywords like next and continue,
+  # pry-byebug adds step-by-step debugging and stack navigation capabilities to
+  # pry using byebug. For more: https://github.com/nixme/pry-nav/issues/20
+  gem 'pry-byebug'
 end
 
 group :test do
