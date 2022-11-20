@@ -25,8 +25,7 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
 
   test "shoud get contact" do
     get contact_url
-    assert_response :success
-    assert_select "title", "Contact | #{@base_title}"
+    assert_redirected_to("https://github.com/alexsmartens")
   end
 
 end
