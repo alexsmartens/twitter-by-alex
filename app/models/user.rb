@@ -17,7 +17,7 @@ class User < ApplicationRecord
   #   1) "has_many :following ..." is a proxy (or a mirror) of
   #      "has_many :active_relationships ..."
   #   2) "source: :followed" - allows to override the default reference source,
-  #      which means we could use "following" instead of "followeds" (which
+  #      which means we could use "following" instead of "followers" (which
   #      would be a default). In other words, this change directs Rails to look
   #      for "followed_id"
   has_many :following, through: :active_relationships, source: :followed
