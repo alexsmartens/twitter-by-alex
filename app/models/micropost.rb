@@ -13,7 +13,19 @@ class Micropost < ApplicationRecord
                     size: {less_than: 5.megabytes,
                            message: "should be less than 5MB"}
 
-  # Limits both width and height of the image to the specified size
+  default_scope -> { order(created_at: :desc) }
+
+  scope :feed, -> (user_id:) {
+    following_ids_sql = <<-HEREDOC
+      SELECT followed_id
+      FROM relationships
+        WHERE follower_id = :user_id
+    HEREDOC
+
+    where("user_id IN (#{following_ids_sql})
+           OR user_id = :user_id", user_id: user_id)
+  }
+
   def display_image
     # Dependencies:
     #   (1) ImageMagic OS package, it comes preinstalled on Heroku
