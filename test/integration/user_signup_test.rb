@@ -62,7 +62,7 @@ class UserSignupTest < ActionDispatch::IntegrationTest
     # Invalid activation token
     get edit_account_activation_path("invalid token", email: user.email)
     follow_redirect!
-    assert_template 'static_pages/home'
+    assert_template 'static_pages/home_not_logged_in'
     assert_not flash.empty?
     assert_select "div.alert.alert-danger", "Incorrect activation link!"
     # Invalid activation email
@@ -70,7 +70,7 @@ class UserSignupTest < ActionDispatch::IntegrationTest
 
     get edit_account_activation_path(user.activation_token, email: "wrong")
     follow_redirect!
-    assert_template 'static_pages/home'
+    assert_template 'static_pages/home_not_logged_in'
     assert_not flash.empty?
     assert_select "div.alert.alert-danger", "Incorrect activation link!"
     # Invalid activation email
@@ -80,7 +80,7 @@ class UserSignupTest < ActionDispatch::IntegrationTest
     get edit_account_activation_path(user.activation_token, email: user.email)
     assert user.reload.activated?
     follow_redirect!
-    assert_template 'users/show'
+    assert_template 'static_pages/home_logged_in'
     assert is_logged_in?
 
     # Invalid login:
@@ -92,7 +92,7 @@ class UserSignupTest < ActionDispatch::IntegrationTest
     # Try to login with the token
     get edit_account_activation_path(user.activation_token, email: user.email)
     follow_redirect!
-    assert_template 'static_pages/home'
+    assert_template 'static_pages/home_not_logged_in'
     assert_not flash.empty?
     assert_select "div.alert.alert-danger", "Your account is already activated!"
     assert_not is_logged_in?

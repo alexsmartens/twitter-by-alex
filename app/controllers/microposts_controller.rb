@@ -14,7 +14,7 @@ class MicropostsController < ApplicationController
       # This case requires rendering the page because redirecting would never
       # show errors keeping the user uniformed if the post was not saved and why
       @feed_items = get_current_user.feed.paginate(page: validate_page_num(params[:page]))
-      render 'static_pages/home'
+      render 'static_pages/home_logged_in'
     end
   end
 

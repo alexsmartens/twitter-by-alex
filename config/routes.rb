@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   scope controller: :static_pages do
     get '/help' => :help
     get '/about' => :about
-    get '/contact' => :contact
+    get '/contact' => redirect("https://github.com/alexsmartens")
   end
 
   get '/signup', :to => 'users#new'

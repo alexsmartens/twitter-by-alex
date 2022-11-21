@@ -77,7 +77,9 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
                         password_confirmation: "foobar" } }
     assert is_logged_in?
     assert_not flash.empty?
-    assert_redirected_to user
+    assert_redirected_to root_path
+    follow_redirect!
+    assert_template "static_pages/home_logged_in"
     # Make sure the link cannot be used after logging in
     user.reload
     assert_nil user.reset_digest
