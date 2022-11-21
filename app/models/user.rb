@@ -1,7 +1,7 @@
 class User < ApplicationRecord
-  attr_accessor :activation_token,  # used for account activation
-                :remember_token,    # used for persistent sessions
-                :reset_token        # used for password reset
+  attr_accessor :activation_token,
+                :remember_token,
+                :reset_token
   # dependent: :destroy, ensures that the related records in the corresponding
   # table (microposts in this case) are destroyed when a user is destroyed
   has_many :microposts, dependent: :destroy
@@ -23,11 +23,7 @@ class User < ApplicationRecord
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
 
-  # before_save: called every time an object is saved. So for NEW and EXISTING
-  # objects. (create and update action)
   before_save :downcase_email
-  # before_create: called only before creation. So only for NEW objects (create
-  # action). Also, before_create is run after before_save on new instance creation
   before_create :create_activation_digest
   validates :name, presence: true, length: {maximum: 50}
   VALID_EMAIL_REGEX =  /\A[\w\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
@@ -48,41 +44,44 @@ class User < ApplicationRecord
   # When this attribute has a nil value, the validation will not be triggered. For
   # more info: https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html
   has_secure_password
-  validates :password, presence: true, length: {minimum: 6}, allow_nil: true
+  validates :password, presence: true, length: {minimum: 6}, allow_nil: true  # allow_nil skips the validation when the value being validated is nil
   validate :change_requested?
 
-  # [Class method] Returns the hash digest of the given string
-  def User.digest(string)  # alternative: "self.digest(string)"
-    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
-                                                  BCrypt::Engine.cost
-    BCrypt::Password.create(string, cost: cost)
+
+  scope :followers_and_self, -> {
+    join(:relationships)
+  }
+
+  class << self
+    def digest(string)
+      cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
+                                                    BCrypt::Engine.cost
+      BCrypt::Password.create(string, cost: cost)
+    end
+
+    def new_token
+      SecureRandom.urlsafe_base64
+    end
   end
 
-  # [Class method] Returns a random token
-  def User.new_token  # alternative: "self.new_token"
-    SecureRandom.urlsafe_base64
-  end
-
-  # [Instance method] Remembers a user in the database for use in persistent session
+  # Store user info in the persistent session
   def remember
-    self.remember_token = User.new_token  # cannot use self.new_token here coz
-      # 'self' would refer to the instance instead of referring to the class
+    self.remember_token = User.new_token
     update_attribute(:remember_digest, User.digest(remember_token))
   end
 
-  # [Instance method] Returns true if the given token matches the digest
+  # Attempts matching a token against the corresponding digest
   def authenticated?(attribute, token)
-    digest = send("#{attribute}_digest")  # same as self.send(..), where self refers to the instance
+    digest = send("#{attribute}_digest")
     return false if digest.nil?
     BCrypt::Password.new(digest).is_password?(token)
   end
 
-  # [Instance method] Forget a user
+  # Erase user info from the persistent session
   def forget
     update_attribute(:remember_digest, nil)
   end
 
-  # [Instance method] Changes the user's activation status to 'active'
   def activate
     # Update multiple attributes at the same time without validation
     update_columns(
@@ -91,12 +90,10 @@ class User < ApplicationRecord
     )
   end
 
-  # [Instance method] Sends out a user activation email
   def send_activation_email
     UserMailer.account_activation(self).deliver_now
   end
 
-  # Sets the password reset attributes
   def create_reset_digest
     self.reset_token = User.new_token
     update_columns(
@@ -105,17 +102,14 @@ class User < ApplicationRecord
     )
   end
 
-  # Sends password reset email
   def send_password_reset_email
     UserMailer.password_reset(self).deliver_now
   end
 
-  # Returns tru if a password reset token has expired
   def password_reset_expired?
     reset_sent_at < 2.hours.ago
   end
 
-  # Voids password reset attributes
   def void_password_reset
     update_columns(
       reset_digest:  nil,
@@ -127,17 +121,14 @@ class User < ApplicationRecord
     Micropost.feed(user_id: id)
   end
 
-  # Follows a user
   def follow(other_user)
     following << other_user
   end
 
-  # Unfollows a user
   def unfollow(other_user)
     following.delete(other_user)
   end
 
-  # Returns true if the current user is following the other user
   def following?(other_user)
     following.include?(other_user)
   end
@@ -148,7 +139,6 @@ class User < ApplicationRecord
       email.downcase!
     end
 
-    # Creates and assigns the activation token and digest
     def create_activation_digest
       self.activation_token = User.new_token
       self.activation_digest = User.digest(activation_token)

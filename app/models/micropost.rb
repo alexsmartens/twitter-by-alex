@@ -4,7 +4,6 @@ class Micropost < ApplicationRecord
   # there is an option "has_many_attached", which allows multiple files to
   # be attached to a single Active Record object
   has_one_attached :image
-  default_scope -> {order(created_at: :desc)}
   validates :user_id, presence: true
   validates :content, presence: true, length: {maximum: 140}
   # validates an image with active_storage_validations gem
@@ -37,6 +36,7 @@ class Micropost < ApplicationRecord
     # is cached for subsequent uses afterwards. For larger sites, it's better to
     # deffer such processing to a background process.
     #
+    # Limit both width and height of the image to the specified size
     image.variant(resize_to_limit: [500, 500])
   end
 end
