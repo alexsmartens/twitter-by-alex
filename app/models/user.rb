@@ -47,11 +47,6 @@ class User < ApplicationRecord
   validates :password, presence: true, length: {minimum: 6}, allow_nil: true  # allow_nil skips the validation when the value being validated is nil
   validate :change_requested?
 
-
-  scope :followers_and_self, -> {
-    join(:relationships)
-  }
-
   class << self
     def digest(string)
       cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
