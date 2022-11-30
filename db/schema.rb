@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_26_032503) do
+ActiveRecord::Schema.define(version: 2022_11_22_012220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,18 @@ ActiveRecord::Schema.define(version: 2021_07_26_032503) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_microposts_on_user_id"
+  end
+
+  create_table "reactions", force: :cascade do |t|
+    t.string "reference_type", null: false
+    t.bigint "reference_id", null: false
+    t.integer "user_id", null: false
+    t.string "reaction_type", limit: 20, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["reference_id", "reference_type", "reaction_type"], name: "index_reactions_on_reference_id_and_reference_type_and_type"
+    t.index ["reference_id", "reference_type", "user_id"], name: "index_reactions_on_reference_id_and_reference_type_and_user_id", unique: true
+    t.index ["reference_type", "reference_id"], name: "index_reactions_on_reference_type_and_reference_id"
   end
 
   create_table "relationships", force: :cascade do |t|

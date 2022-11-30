@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+cat_video_dislike:
+  reference: cat_video
+  reference_type: Micropost
+  user: michael
+  reaction_type: "dislike"
+  created_at: <%= Time.zone.now %>
+
+cat_video_love:
+  reference: cat_video
+  reference_type: Micropost
+  user: alex
+  reaction_type: "love"
+  created_at: <%= Time.zone.now %>
