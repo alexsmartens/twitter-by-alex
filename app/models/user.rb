@@ -22,6 +22,8 @@ class User < ApplicationRecord
   #      for "followed_id"
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
+  has_many :loves, -> { loves }, class_name: :Reaction, foreign_key: :user_id, dependent: :destroy
+  has_many :dislikes, -> { dislikes }, class_name: :Reaction, foreign_key: :user_id, dependent: :destroy
 
   before_save :downcase_email
   before_create :create_activation_digest
