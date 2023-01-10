@@ -20,5 +20,9 @@ module TwitterByAlex
     # to degrade gracefully (in other words, for Ajax actions to work fine in
     # browsers that have JavaScript disabled)
     config.action_view.embed_authenticity_token_in_remote_forms = true
+
+    # Custom error handling: bypass the internal error logic and tell the
+    # application to head to config/routes.rb for further instructions
+    config.exceptions_app = self.routes
   end
 end
