@@ -4,6 +4,9 @@ class Micropost < ApplicationRecord
   # there is an option "has_many_attached", which allows multiple files to
   # be attached to a single Active Record object
   has_one_attached :image
+  has_many :loves, -> { loves }, as: :reference, class_name: :Reaction, foreign_key: :reference_id, dependent: :destroy
+  has_many :dislikes, -> { dislikes }, as: :reference, class_name: :Reaction, foreign_key: :reference_id
+
   validates :user_id, presence: true
   validates :content, presence: true, length: {maximum: 140}
   # validates an image with active_storage_validations gem
@@ -38,5 +41,13 @@ class Micropost < ApplicationRecord
     #
     # Limit both width and height of the image to the specified size
     image.variant(resize_to_limit: [500, 500])
+  end
+
+  def love_counter
+    loves.count
+  end
+
+  def dislike_counter
+    dislikes.count
   end
 end

@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   resources :password_resets, only: [:new, :create, :edit, :update]
   resources :microposts, only: [:create, :destroy]
   resources :relationships, only: [:create, :destroy]
+  resources :reactions
 
   # Custom handling of common errors
    match "/404", to: "errors#not_found", via: :all
